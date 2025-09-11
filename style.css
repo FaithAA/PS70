@@ -2,7 +2,8 @@ body {
     font: 20px "Gill Sans", Verdana, sans-serif;
     line-height: 1.8;
     color: #000000;
-    background-color: #dcdcdc;
+    background-image: url("website_background.jpg");
+    background-color: #28A7DE;
     padding-top: 0px !important;
   }
 
@@ -11,7 +12,7 @@ body {
 }
 
 p {font-size: 16px;}
-.margin {margin-bottom: 30px;}
+.margin {margin-bottom: 20px;}
 
 a {
   color: #000000;
@@ -23,8 +24,8 @@ a {
 }
 
 nav {
-  background-color: #dcdcdc;
-  color: #EEE7E8;
+  background-color: transparent;
+  color: #000000;
   padding: 50px 0px;
 }
 
@@ -41,36 +42,37 @@ nav {
 }
 
 .nav-link {
-  border: 3px outset #a3a3a3;
+  border: 3px outset #28A7DE;
   border-radius: 20px;
   padding: 10px 30px;
-  background-color: #a3a3a3;
-  color: #EEE7E8;
+  background-color: #28A7DE;
+  color: #00000
   transition: 0.3s;
 }
 
 .nav-link:hover {
-  border: 3px outset #FFFFFF;
+  border: 3px outset #000000;
   border-radius: 20px;
   padding: 10px 30px;
-  background-color: #a3a3a3;
+  background-color: #28A7DE;
   transition: 0.3s;
 }
 
 #btn {
-  border: 3px outset #FFFFFF;
+  border: 3px outset #000000;
   border-radius: 40px;
   padding: 10px 30px;
-  background-color: #a3a3a3;
+  background-color: #28A7DE;
   color: #000000;
   transition: 0.3s;
 }
 
 #btn:hover {
-  border: 3px inset #FFFFFF;
+  border: 3px inset #000000;
   border-radius: 40px;
   padding: 10px 30px;
-  background-color: #a3a3a3;
+  background-color: #28A7DE;
+  color: #000000;
   transition: 0.3s;
 }
 
@@ -89,8 +91,8 @@ nav {
 }
 
 code {
-  background-color: #2d2b33;
-  color: #EEE7E8;
+  background-color: #28A7DE;
+  color: #000000;
   font-family: 'Courier New', Courier, monospace;
 }
 
@@ -103,4 +105,22 @@ code {
 
 #aboutme {
   padding: 20px;
+}
+img.icon {
+  height: 120px;
+  width: 120px;
+  object-fit: contain; 
+  display: block;
+  margin: auto;
+}
+
+.row {
+  display: flex;
+  justify-content: space-around; 
+  margin: 20px 0;
+}
+
+.col {
+  flex: 1;
+  text-align: center;
 }
