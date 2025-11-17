@@ -38,10 +38,263 @@
 </div>
 <p class="margin">   </p>
 
-<h4>Assignment: [Program something with IOT]</h4>
+<h4>Assignment: Program something with IOT</h4>
+<p> For this assignment, we (Faith and Suhani) worked on a program that allows us to play notes depending on how loud the room is. This was motivated by our personalities that are such we easily get lost in the noise around us. That is, if those around us are loud, we tend to focus on the loudness, and we thought that maybe playing something would make us focus more on what is playing than the conversations around us (to not be so noisy). So, we wanted to be able to control this using a LAN web server as well as just the circuit. This is, we wanted to be able to play a specific tone, which we labeled as Low beat, upbeat, or calm song. 
+The way it works is that we set our treshold on what each level means. Lowbeat is when there is anything quiet room atmosphere. Calm song would correspond to just chatter in the room, and finally upbeat to any noise that is above chatter (like drilling happening or a party). We are able to control this by either clicking on the website, or the circuit will just play a note depending on what the atmosphere is. 
+here is the code that we used before: 
+<pre><code>
+#include <WiFi.h>
+#include <WiFiAP.h>
+#include <WiFiClient.h>
+#include <WiFiGeneric.h>
+#include <WiFiMulti.h>
+#include <WiFiSTA.h>
+#include <WiFiScan.h>
+#include <WiFiServer.h>
+#include <WiFiType.h>
+#include <WiFiUdp.h>
+#include "pitches.h"
+#include <ESP_I2S.h>
+I2SClass I2S;
+
+// ---------------- WIFI CONFIG ----------------
+const char* ssid = "MAKERSPACE";
+const char* password = "12345678";
+
+WiFiServer server(80);
+
+int BUZZER_PIN = 23;
+int low_tres = 14000;
+int calm_tres = 16000;
+int up_tres = 20000;
+
+// ---------------- SONG 1 ----------------
+int melody1[] = {
+  REST,
+  NOTE_D5, NOTE_D5, NOTE_E5, NOTE_FS5, NOTE_G5, NOTE_A5, NOTE_E5, NOTE_D5, NOTE_FS5, NOTE_E5, NOTE_D5, REST,
+  NOTE_B5, NOTE_D5, NOTE_D5, NOTE_D5, NOTE_CS5, NOTE_B5, NOTE_A5, NOTE_B5, NOTE_CS5, NOTE_D5, NOTE_B5, NOTE_A5,
+  NOTE_D5, NOTE_D5, NOTE_E5, NOTE_FS5, NOTE_G5, NOTE_A5, NOTE_E5, NOTE_D5, NOTE_FS5, NOTE_E5, NOTE_D5,
+  NOTE_A5, NOTE_D5, REST, NOTE_A5, NOTE_D5, REST, NOTE_A5, NOTE_D5, REST, NOTE_A5, NOTE_D5, NOTE_B5,
+  NOTE_CS5, NOTE_CS5, NOTE_CS5, NOTE_CS5, NOTE_CS5,
+  NOTE_A5, NOTE_CS5, NOTE_A5, NOTE_CS5, NOTE_A5, NOTE_CS5,
+  NOTE_D5, NOTE_D5, REST,
+  NOTE_CS5, NOTE_CS5, NOTE_CS5,
+  NOTE_D5, NOTE_CS5, NOTE_D5, NOTE_CS5, NOTE_D5, NOTE_FS5,
+  NOTE_D5, NOTE_CS5, NOTE_D5, NOTE_CS5, NOTE_D5, NOTE_CS5,
+  NOTE_CS5, NOTE_D5, NOTE_CS5, NOTE_D5, NOTE_CS5, NOTE_CS5,
+  NOTE_D5, NOTE_CS5, NOTE_CS5, NOTE_D5, NOTE_CS5, NOTE_CS5,
+  NOTE_CS5, NOTE_D5, NOTE_CS5, NOTE_CS5, NOTE_G5, NOTE_FS5,
+  NOTE_D5, NOTE_E5, NOTE_E5, NOTE_E5, NOTE_D5,
+  REST
+};
+
+int durations1[] = {
+  4,
+  4,4,4,4,4,4,2,4,4,4,1,
+  4,4,4,4,4,4,2,4,4,4,1,2,
+  4,4,4,4,4,4,2,4,4,4,4,
+  4,2,4,4,2,4,4,2,4,4,4,2,
+  4,4,4,4,4,
+  4,4,4,4,4,4,
+  4,2,2,
+  4,4,4,
+  4,4,4,4,4,4,
+  4,4,4,4,4,4,
+  4,4,4,4,4,4,
+  4,4,4,4,4,4,
+  4,4,4,4,4,4,
+  4,4,4,4,4,
+  1
+};
+
+// ---------------- SONG 2 ----------------
+int melody2[] = {
+  NOTE_FS4, NOTE_FS4, NOTE_A4,
+  NOTE_FS4, NOTE_A4,
+  NOTE_FS4, NOTE_GS4, NOTE_GS4, NOTE_GS4, NOTE_A4, NOTE_B4,
+  NOTE_E4, NOTE_GS4,
+  NOTE_CS5, NOTE_GS4, NOTE_FS4,
+  NOTE_FS4, NOTE_FS4, NOTE_A4,
+  NOTE_FS4, NOTE_FS4, NOTE_A4,
+  NOTE_FS4, NOTE_E4, NOTE_GS4, NOTE_GS4, NOTE_GS4, NOTE_A4, NOTE_B4,
+  NOTE_E4, NOTE_GS4,
+  NOTE_CS5, NOTE_GS4, NOTE_FS4,
+};
+int durations2[] = {
+  4,4,3,4,3,4,3,8,8,4,3,4,1,4,4,1,
+  4,4,3,4,4,3,4,3,3,8,8,4,3,4,1,4,4,1
+};
+
+// ---------------- SONG 3 ----------------
+int melody3[] = {
+ REST,
+
+  NOTE_E4, NOTE_DS4, NOTE_B3, NOTE_E4, NOTE_DS4, NOTE_B3,
+  NOTE_E4, NOTE_DS4, NOTE_B3, NOTE_E4, NOTE_FS4, NOTE_GS4,
+  NOTE_B4, NOTE_CS5, NOTE_E5, NOTE_A5, NOTE_GS5, NOTE_FS5,
+  NOTE_D5, NOTE_D5, NOTE_E5, NOTE_FS5, NOTE_E5,
+  NOTE_B4, NOTE_GS4, NOTE_A5, NOTE_B4,
+  NOTE_DS5, NOTE_E5,
+  NOTE_B4, NOTE_CS5, NOTE_E5, NOTE_A5, NOTE_GS5,
+  NOTE_DS5,
+  NOTE_B5, NOTE_A5, NOTE_GS5,
+
+  NOTE_E5, NOTE_E5, NOTE_E5, NOTE_FS5, NOTE_FS5, NOTE_FS5,
+  NOTE_GS5, NOTE_GS5, NOTE_GS5, NOTE_DS5, NOTE_DS5, NOTE_DS5,
+
+  NOTE_CS5, NOTE_E4, NOTE_CS5, NOTE_B4,
+  NOTE_CS5, NOTE_B4, NOTE_GS4, NOTE_A4,
+  NOTE_B4, NOTE_A4, NOTE_GS4, NOTE_E4,
+  NOTE_E4
+};
+int durations3[] = {
+  4,
+
+  4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4,
+  2, 4, 4, 4, 4,
+  2, 4, 4, 4,
+  2, 2,
+  4, 4, 4, 4, 4,
+  2,
+  4, 4, 4,
+
+  4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4,
+
+  2, 4, 2, 4,
+  2, 2, 4, 4,
+  2, 2, 4, 4,
+  1,
+};
+
+// ----------- ARRAYS FOR GENERIC PLAYER -----------
+int* melodies[] = { NULL, melody1, melody2, melody3};
+int* durations[] = { NULL, durations1, durations2, durations3 };
+int songSizes[] = {
+ 0,
+ sizeof(durations1)/sizeof(int),
+ sizeof(durations2)/sizeof(int),
+ sizeof(durations3)/sizeof(int)
+};
+
+// ------------ PLAYER STATE MACHINE -------------
+int currentSong = 0;
+int previousSong = 0;
+int noteIndex = 0;
+unsigned long nextNoteAt = 0;
+
+// --------------------------------------------------
+//                   HTTP HANDLER
+// --------------------------------------------------
+void handleClient() {
+  WiFiClient client = server.available();
+  if (!client) return;
+
+  String req = client.readStringUntil('\r');
+  client.flush();
+  //Serial.println(req);
+
+  if (req.indexOf("GET /H") >= 0) { currentSong = 1; noteIndex = 0; }
+  if (req.indexOf("GET /L") >= 0) { currentSong = 2; noteIndex = 0; }
+  if (req.indexOf("GET /N") >= 0) { currentSong = 3; noteIndex = 0; }
+
+  client.println("HTTP/1.1 200 OK");
+  client.println("Content-Type: text/html\n");
+  client.println("Click <a href='/H'> here </a> for an upbeat song<br>");
+  client.println("Click <a href='/L'>here</a> for a calm song<br>");
+  client.println("Click <a href='/N'>here</a> for a lowbeat song<br>");
+  client.stop();
+}
+
+// --------------------------------------------------
+//             NON-BLOCKING SONG ENGINE
+// --------------------------------------------------
+void playSong() {
+  if (currentSong == 0) return;
+
+  unsigned long now = millis();
+  if (now < nextNoteAt) return;
+
+  int len = songSizes[currentSong];
+  if (noteIndex >= len) {
+    noTone(BUZZER_PIN);
+    currentSong = 0;
+    return;
+  }
+
+  int note = melodies[currentSong][noteIndex];
+  int dur = 1000 / durations[currentSong][noteIndex];
+
+  tone(BUZZER_PIN, note, dur);
+  nextNoteAt = now + dur * 1.30;
+
+  noteIndex++;
+}
+
+// --------------------------------------------------
+void setup() {
+  Serial.begin(115200);
+  pinMode(BUZZER_PIN, OUTPUT);
+
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting");
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(300);
+    Serial.print(".");
+  }
+
+  Serial.println("\nWiFi Connected!");
+  Serial.println(WiFi.localIP());
+
+  server.begin();
+  while (!Serial) {
+      ; // wait for serial port to connect. Needed for native USB port only
+  }
+  I2S.setPins(5, 25, -1, 35, 0);// SCK (BCK), WS (LRCL), SDOUT, SDIN, MCLK
+   // start I2S at 16 kHz with 32-bits per sample
+  if (!I2S.begin(I2S_MODE_STD, 16000, I2S_DATA_BIT_WIDTH_32BIT, I2S_SLOT_MODE_MONO)) {
+    Serial.println("Failed to initialize I2S!");
+    while (1); // do nothing
+  }
 
 
+}
 
+// --------------------------------------------------
+void loop() {
+  int sample = I2S.read();
+
+  if ((sample == 0) || (sample == -1) ) {
+          return;
+  }
+  // convert to 18 bit signed
+  sample >>= 14;
+  int amplitude = abs(sample);
+
+  if (amplitude >= up_tres) { currentSong = 1; }
+  if (amplitude < up_tres && amplitude > low_tres) { currentSong = 2; }
+  if (amplitude < low_tres) { currentSong = 3; }
+
+  if (currentSong != previousSong){
+    noteIndex = 0;
+    previousSong = currentSong;
+  }
+
+//  handleClient();   // instantly detects button click
+  playSong();       // plays without blocking
+  Serial.print("Amplitude: ");
+  Serial.print(amplitude);
+  Serial.print("|| Current Song: ");
+  Serial.println(currentSong);
+}
+
+</code></pre> 
+
+<br>
+<p> Lessons Learned from this code: It looks like how it would owrk is that someone presses a a link and a song plays, then depending on what they pressed, that indicates what is playing. Our initial guess was that once we get it to play from the website then we can easily engage the sensor now. However, it turned out that this was being controlled from the website, so the sensor didn't work. We also learned that the buzzer and microphone can't be on the same pin (apparently they don't like each other, we still don't know why/how) . To manage this, we had to find a way of calling functions outside.
 
 </div>
 </xmp>
