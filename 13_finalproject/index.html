@@ -40,10 +40,99 @@
 <p> Here is my inspiration for the dancing robot</p>
 <<video width="640" height="360" controls autoplay muted loop>
   <source src="inspo.mp4" type="video/mp4">
-    A robot from ABB that moves around
+    A robot from ABB that moves around upon rotating a back gear mechanism.
 </video>
 <p>So, I am thinking of something similar, but for the scope of this project I will need to maek somethig bigger so that I can imbed the circuit. The plan is to start with one mechanisim at a time. I will start with arms mechanism using one motor, move to legs mechanism using another motor, then combine the two mechanisms and see if it's possible with just one motor. After this, I will be able to finally finish with the remaining mechanism, which is the rotating of the full robot for solar tracking. The project will incorporate designing and coding, which is my goal to be able to combine designing. Right now, I think I will use Light Sensors as well as a Sound sensor. I will need to look into Audio Frequency Detector arduino existing projects and build off that to control motors. I don't know much about details, but here to the remaining semester of fun coding and building.
 </p>
+
+<p>
+  From MVP week, I got recommendations on what to consider to reduce complexity and keep the project in the scope of the class and my design abilities. Now the robot was a combination of a dummy and the initial considered robot mechanism. The inspiration can be found <a href = "https://www.youtube.com/watch?v=n_RyVG2YBYA"> here! </a>
+
+  The final product is 
+  <a href = "https://youtu.be/0KDKPEpnpZg"> Final Project Video/Demo </a>
+<p>
+<h4>Pictures of the final design assembled.</h4>
+</p>
+<div>
+  <img src="front_view.JPG" alt="Final Porject front view robot" style="width: 650px; height: 650px; object-fit: cover; display: block; margin: left;">
+</div>
+<img src="front_view.JPG" alt="Final Project back view robot" style="width: 650px; height: 650px; object-fit: cover; display: block; margin: left;">
+
+<h4>Mechanical Design</h4>
+<p>
+  The entire robot is 3D-printed, including the body, legs, arms, head, and motors connections. The platform is made out of wood.
+  The robot (legs) is placed on a platform that moves up and down when driven by the DC motor, creating a movement that could be reduced to a 4 degrees of freedom up and down and definitely complex considering the two parts of the legs (below the knees and hips to knees) move in coupled ways.
+</p> 
+<p>
+  The arms are mounted on a rotating joint driven by a micro servo. Their motion is intentionally 
+  limited to a small range of angles so the hands just swing a few degrees to the left and right, 
+  which gives the robot a subtle but expressive “dance” instead of wild flailing.
+</p>
+<p> Since the robot is meant to move legs, this means that I needed a way to keep it on the platform. To achieve this, I made the back of the robot to be attached to the platform by extending it low and far enough to not interfere with the motion of hands and legs. This keeps the robot steady as the arms and legs move around. 
+</p>
+<h4>Electronics and Control</h4>
+<p>
+  <b>Legs (sound-reactive DC motor):</b><br>
+  The legs are driven by a DC motor controlled through a motor driver. The system is calibrated so that 
+  when the ambient sound level rises above background noise, the motor turns on and moves the platform. 
+  Because the platform is relatively heavy, I had to keep the motor at a constant higher speed; lowering 
+  the speed reduced the available torque too much, and the motor could no longer lift the platform reliably. 
+  This meant the legs cannot easily follow rhythm or tempo, rather just react to noise. And with less torque, the motor was then stuck at the bottom/below the platform (and just fry the driver:((() Same goes with not consistent motion (like when the treshold was very sensitive), the motor could stop at maybe the surface of the platform, and when it was time to move again, it could get stuck there and not move
+</p>
+
+
+<p> <b>Hands (WiFi + Servo):</b><br> 
+The hands are controlled by a servo connected to an ESP32 running a web server. From a browser, the user can choose between three modes: slow, fast, or a “dance to a song” mode. </p> 
+<p> <b>Song Mode:</b><br> In this mode, a buzzer plays a predefined melody, and the servo moves left and right in sync with each note—holding each pose for the exact duration of the note—so the robot’s hands appear to dance to the music. </p>
+
+<a href="servo_buzzer.zip" download>Download Final Code for Servo</a>
+<p> Code for moving platform should be on Week 4</p>
+
+<h4>Satisfactions & Lessons Learned</h4>
+
+<ul>
+  <li>Seeing the full system come together was satisfying, especially watching the printed parts, circuits, and code finally work as one robot.</li>
+  <li>I became alittle more accustomed in 3D design after repeatedly adjusting tolerances and learning how small changes affect fit and movement.</li>
+  <li>I learnedthe value of simplifying a project’s scope to make space for polishing and finishing strong.</li>
+  <li>The power of asking for help.</li>
+</ul>
+
+<h4>Areas for Improvement</h4>
+
+<ul>
+  <li>
+   Integrated lighting interaction: 
+    Adding LEDs that respond to sound or servo movement would enhance the 
+    “Light Up and Danse” theme and make the robot feel more alive.
+  </li>
+
+  <li>
+    Solar tracking expansion (original goal):
+    The final robot doesn’t yet rotate toward sunlight, which was part of the 
+    initial concept. Adding photoresistors and a simple rotation mechanism would 
+    complete the hybrid dancing/solar-tracking idea (which I hope to work on soon after the class).
+  </li>
+
+  <li>
+    Non-blocking code:
+    Some of the current behavior uses <code>delay()</code>, which blocks other actions 
+    while the robot is “dancing.” Rewriting this using non-blocking timing 
+    (for example, with <code>millis()</code>) would let the robot move, respond to input, 
+    and update the web server at the same time.
+  </li>
+  <li>
+    <b>More expressive arm motion:</b>
+    The arms were designed to swing left and right, but the structure also allows 
+    different parts of each arm to move in slightly different ways. With more time, 
+    I would redesign the joints and linkages to better use this idea and create 
+    more layered, natural-looking arm movement and not stiff.
+  </li>
+</ul>
+Finally, some of the CAD designs are available <a href="Archive.zip" download>here</a>.
+
+<p> <strong>Special thanks</strong> to everyone who helped me reach the “end” of this project. I truly couldn’t have asked for a better class. Alyssa, Bobby, Jessica, Kassia, Nathan, and PS70 Fall 2025 enrollees, all made the course feel welcoming, supportive, and genuinely fun. The staff guidance was incomparable. </p>
+Until we meet again yayyyy
+
 </div>
 </xmp>
 </body>
