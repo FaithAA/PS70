@@ -38,7 +38,7 @@
 
 </p>
 <p> Here is my inspiration for the dancing robot</p>
-<<video width="640" height="360" controls autoplay muted loop>
+<video width="640" height="360" controls autoplay muted loop>
   <source src="inspo.mp4" type="video/mp4">
     A robot from ABB that moves around upon rotating a back gear mechanism.
 </video>
@@ -56,7 +56,8 @@
 <div>
   <img src="front_view.JPG" alt="Final Porject front view robot" style="width: 650px; height: 650px; object-fit: cover; display: block; margin: left;">
 </div>
-<img src="front_view.JPG" alt="Final Project back view robot" style="width: 650px; height: 650px; object-fit: cover; display: block; margin: left;">
+<br>
+<img src="back_view.JPG" alt="Final Project back view robot" style="width: 650px; height: 650px; object-fit: cover; display: block; margin: left;">
 
 <h4>Mechanical Design</h4>
 <p>
@@ -72,7 +73,7 @@
 </p>
 <h4>Electronics and Control</h4>
 <p>
-  <b>Legs (sound-reactive DC motor):</b><br>
+  Legs (sound-reactive DC motor):<br>
   The legs are driven by a DC motor controlled through a motor driver. The system is calibrated so that 
   when the ambient sound level rises above background noise, the motor turns on and moves the platform. 
   Because the platform is relatively heavy, I had to keep the motor at a constant higher speed; lowering 
@@ -81,9 +82,9 @@
 </p>
 
 
-<p> <b>Hands (WiFi + Servo):</b><br> 
+<p> Hands (WiFi + Servo):<br>
 The hands are controlled by a servo connected to an ESP32 running a web server. From a browser, the user can choose between three modes: slow, fast, or a “dance to a song” mode. </p> 
-<p> <b>Song Mode:</b><br> In this mode, a buzzer plays a predefined melody, and the servo moves left and right in sync with each note—holding each pose for the exact duration of the note—so the robot’s hands appear to dance to the music. </p>
+<p> Song Mode:<br> In this mode, a buzzer plays a predefined melody, and the servo moves left and right in sync with each note—holding each pose for the exact duration of the note—so the robot’s hands appear to dance to the music. </p>
 
 <a href="servo_buzzer.zip" download>Download Final Code for Servo</a>
 <p> Code for moving platform should be on Week 4</p>
@@ -100,6 +101,10 @@ The hands are controlled by a servo connected to an ESP32 running a web server. 
 <h4>Areas for Improvement</h4>
 
 <ul>
+  <li>
+   Ability to move the head: Initially I hoped I could have the head move with the servo (hands), but I wasn't able to make a joint that allows the head to move without falling off the body. The hole was to be tight fit to stay attached to the body, and this meant that moving around was a hustle. This would have been improved by a ball and socket joint, which I am yet to figure out how to imbed in designs.
+  </li>
+
   <li>
    Integrated lighting interaction: 
     Adding LEDs that respond to sound or servo movement would enhance the 
@@ -121,7 +126,7 @@ The hands are controlled by a servo connected to an ESP32 running a web server. 
     and update the web server at the same time.
   </li>
   <li>
-    <b>More expressive arm motion:</b>
+    More expressive arm motion:
     The arms were designed to swing left and right, but the structure also allows 
     different parts of each arm to move in slightly different ways. With more time, 
     I would redesign the joints and linkages to better use this idea and create 
@@ -130,7 +135,7 @@ The hands are controlled by a servo connected to an ESP32 running a web server. 
 </ul>
 Finally, some of the CAD designs are available <a href="Archive.zip" download>here</a>.
 
-<p> <strong>Special thanks</strong> to everyone who helped me reach the “end” of this project. I truly couldn’t have asked for a better class. Alyssa, Bobby, Jessica, Kassia, Nathan, and PS70 Fall 2025 enrollees, all made the course feel welcoming, supportive, and genuinely fun. The staff guidance was incomparable. </p>
+<p> <strong>Special thanks</strong> to everyone who helped me reach the “end” of this project. I truly couldn’t have asked for a better class. Alyssa, Bobby, Jessica, Kassia, Nathan, and PS70 Fall 2025 enrollees, they all made the course feel welcoming, supportive, and genuinely fun. The staff guidance was incomparable. </p>
 Until we meet again yayyyy
 
 </div>
