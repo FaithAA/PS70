@@ -47,23 +47,32 @@
   <br>
 
   <p> Lessons Learned from this code: It looks like how it would work is that someone presses a a link and a song plays, then depending on what they pressed, that indicates what is playing. Our initial guess was that once we get it to play from the website then we can easily engage the sensor now. However, it turned out that this was being controlled from the website, so the sensor didn't work. We also learned that the buzzer and microphone can't be on the same pin (apparently they don't like each other, we still don't know why/how). To manage this, we had to find a way of calling functions outside the LAN declaration and setup.
+    <br>
 
   Attached is the initial code design that didn't allow us to use sensors to control what was playing. 
+  <br>
+
   <a id="btn" href="lan_asgmt.zip" download>Download my files from this week!</a>
 
   This is the circuit design for this week.
+  <br>
     <img src="circuit.JPG" alt="Breadboard Circuit" style="width: 400px; height: 250px; object-fit: cover; display: block; margin: left;">
 Another issue that we didn't think about when deciding on the project was the fact that the microphone is going to pick up the sound from the buzzer, and this was going to interfere with the set tresholds. Unfortunately, we couldn't do anything about this. What we had was that the atmosphere (or reading from the serial monitor) would indicate that it's quiet then start playing a quiet song - but as the song plays, the reading would change to maybe loud or medium sound level, which would then change what the buzzer was playing. But, since buzzers don't play continuously (or at least the songs we had to play had spaces between notes), we could then have the reading back to low and the cycle goes on. Because of this, unless it was a loud room and the readings don't change with the buzzer as it's already above treshold, we couldn't get the buzzer to play low songs as the level set to it would interfere with the buzzer. Here is a video to indicate this. 
+<br>
 <<video width="640" height="360" controls autoplay muted loop>
   <source src="changing.mp4" type="video/mp4">
   I hope your browser supports the video tag.
 </video>
+<br>
 Fortunately, we also have success where the buzzer played a song all the way through without interruption because it was an ideal background noise. 
 <<video width="640" height="360" controls autoplay muted loop>
   <source src="nice.mp4" type="video/mp4">
   I hope your browser supports the video tag.
+
 </video>
+<br>
 Quite content with the results and getting to know how LANs and Circuits work together and what considerations are needed when making circuits that can be controlled differenlty.
+<br>
 </div>
 </xmp>
 </body>
